@@ -5,6 +5,7 @@ set -euo pipefail
 init(){
     sudo apt update -y
     sudo apt upgrade -y
+    sudo apt install apt-utils -y
 }
 
 remove_docker(){
@@ -58,6 +59,43 @@ install_apps(){
     #install selkies
     docker run --name selkies -it -d --rm --shm-size=2g -p 8080:8080  ghcr.io/selkies-project/selkies/desktop:main-ubuntu26.04
 }
+
+install_pwsh(){
+
+    ##!/bin/bash
+    ###################################
+    # Prerequisites
+
+    # Update the list of packages
+    sudo apt-get update
+
+    # Install pre-requisite packages.
+    sudo apt-get install -y wget apt-transport-https software-properties-common
+
+    # Get the version of Ubuntu
+    source /etc/os-release
+
+    # Download the Microsoft repository keys
+    wget -q https://packages.microsoft.com/config/ubuntu/$VERSION_ID/packages-microsoft-prod.deb
+
+    # Register the Microsoft repository keys
+    sudo dpkg -i packages-microsoft-prod.deb
+
+    # Delete the Microsoft repository keys file
+    rm packages-microsoft-prod.deb
+
+    # Update the list of packages after we added packages.microsoft.com
+    sudo apt-get update
+
+    ###################################
+    # Install PowerShell
+    sudo apt-get install -y powershell
+
+    # Start PowerShell
+    #pwsh
+
+}
+
 
 main(){
     init
